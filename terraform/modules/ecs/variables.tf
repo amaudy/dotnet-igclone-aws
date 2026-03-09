@@ -14,8 +14,9 @@ variable "vpc_id" {
   type = string
 }
 
-variable "private_subnet_ids" {
-  type = list(string)
+variable "subnet_ids" {
+  description = "Subnet IDs for ECS tasks (public subnets with assign_public_ip)"
+  type        = list(string)
 }
 
 variable "target_group_arn" {

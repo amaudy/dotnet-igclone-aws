@@ -108,7 +108,7 @@ module "ecs" {
   environment           = var.environment
   aws_region            = var.aws_region
   vpc_id                = module.networking.vpc_id
-  private_subnet_ids    = module.networking.private_subnet_ids
+  subnet_ids            = module.networking.public_subnet_ids
   target_group_arn      = module.alb.target_group_arn
   ecr_repository_url    = module.ecr.repository_url
   db_host               = module.database.endpoint
