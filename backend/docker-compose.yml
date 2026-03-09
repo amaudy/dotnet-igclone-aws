@@ -13,6 +13,13 @@ services:
       - Jwt__Issuer=InstaClone
       - Jwt__Audience=InstaClone
 
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+
   db:
     image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
