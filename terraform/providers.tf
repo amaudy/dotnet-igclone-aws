@@ -8,12 +8,14 @@ terraform {
     }
   }
 
-  # Uncomment after initial apply to migrate state to S3
+  # Step 1: Apply with -target to create the S3 bucket and DynamoDB table (see state.tf)
+  # Step 2: Uncomment the block below
+  # Step 3: Run: terraform init -migrate-state
   # backend "s3" {
   #   bucket         = "instaclone-terraform-state"
   #   key            = "terraform.tfstate"
   #   region         = "us-east-1"
-  #   dynamodb_table = "terraform-locks"
+  #   dynamodb_table = "instaclone-terraform-locks"
   #   encrypt        = true
   # }
 }
