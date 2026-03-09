@@ -3,7 +3,7 @@ services:
     ports:
       - "5050:8080"
     volumes:
-      - ./src/InstaClone.Api:/src
+      - ./backend/src/InstaClone.Api:/src
       - uploads:/app/uploads
     environment:
       - ASPNETCORE_URLS=http://+:8080
