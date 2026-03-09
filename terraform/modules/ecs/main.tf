@@ -88,32 +88,7 @@ resource "aws_cloudwatch_log_group" "api" {
   retention_in_days = 14
 }
 
-# --- Security Group ---
-
-resource "aws_security_group" "ecs" {
-  name_prefix = "${var.project_name}-${var.environment}-ecs-"
-  description = "Security group for ECS tasks"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    description     = "HTTP from ALB"
-    from_port       = 8080
-    to_port         = 8080
-    protocol        = "tcp"
-    security_groups = [var.alb_security_group_id]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-ecs-sg"
-  }
-}
+# Security group is created at root level and passed in to break circular dependency with database
 
 # --- ECS Cluster ---
 
@@ -201,7 +176,7 @@ resource "aws_ecs_service" "api" {
 
   network_configuration {
     subnets          = var.private_subnet_ids
-    security_groups  = [aws_security_group.ecs.id]
+    security_groups  = [var.ecs_security_group_id]
     assign_public_ip = false
   }
 

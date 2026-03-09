@@ -75,6 +75,11 @@ variable "alb_security_group_id" {
   type = string
 }
 
+variable "ecs_security_group_id" {
+  description = "Security group ID for ECS tasks (created at root level)"
+  type        = string
+}
+
 variable "cpu" {
   type    = number
   default = 256
