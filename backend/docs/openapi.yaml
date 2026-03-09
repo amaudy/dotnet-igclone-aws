@@ -4,7 +4,7 @@ info:
   description: Instagram clone REST API built with .NET 8
   version: 1.0.0
 servers:
-  - url: http://localhost:5000
+  - url: http://localhost:5050
     description: Local development
 
 components:
