@@ -1,4 +1,5 @@
 using System.Text;
+using Amazon.S3;
 using InstaClone.Api.Data;
 using InstaClone.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,8 +57,23 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Database connection: support individual env vars or full connection string
+var dbHost = builder.Configuration["Database:Host"];
+string connectionString;
+if (!string.IsNullOrEmpty(dbHost))
+{
+    var dbName = builder.Configuration["Database:Name"] ?? "InstaClone";
+    var dbUser = builder.Configuration["Database:User"] ?? "sa";
+    var dbPassword = builder.Configuration["Database:Password"] ?? "";
+    connectionString = $"Server={dbHost};Database={dbName};User Id={dbUser};Password={dbPassword};TrustServerCertificate=True";
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -83,13 +99,27 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<IImageService, LocalImageService>();
+// Conditional image service registration
+var imageProvider = builder.Configuration["ImageStorage:Provider"];
+if (string.Equals(imageProvider, "S3", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddAWSService<IAmazonS3>();
+    builder.Services.AddScoped<IImageService, S3ImageService>();
+}
+else
+{
+    builder.Services.AddScoped<IImageService, LocalImageService>();
+}
+
+// Externalized CORS origins
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:4200", "http://localhost:5173" };
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -108,15 +138,20 @@ using (var scope = app.Services.CreateScope())
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors();
-app.UseStaticFiles();
 
-var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
-Directory.CreateDirectory(uploadsPath);
-app.UseStaticFiles(new StaticFileOptions
+// Only serve local uploads when not using S3
+if (!string.Equals(imageProvider, "S3", StringComparison.OrdinalIgnoreCase))
 {
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uploadsPath),
-    RequestPath = "/uploads"
-});
+    app.UseStaticFiles();
+    var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
+    Directory.CreateDirectory(uploadsPath);
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uploadsPath),
+        RequestPath = "/uploads"
+    });
+}
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -124,7 +159,20 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+
+// Health check with database connectivity
+app.MapGet("/health", async (AppDbContext db) =>
+{
+    try
+    {
+        await db.Database.CanConnectAsync();
+        return Results.Ok(new { status = "healthy" });
+    }
+    catch
+    {
+        return Results.Json(new { status = "unhealthy" }, statusCode: 503);
+    }
+});
 
 app.Run();
 
