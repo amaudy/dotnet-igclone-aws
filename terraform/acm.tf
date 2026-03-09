@@ -1,7 +1,5 @@
-# ACM certificate for custom domain — created at root level because:
-# - CDN needs the cert ARN to configure HTTPS
-# - DNS module needs CDN domain for the A record
-# - Creating cert at root breaks this circular dependency
+# ACM certificate for custom domain — must be in us-east-1 for CloudFront.
+# Created at root level to break circular dependency between CDN and DNS.
 
 data "aws_route53_zone" "main" {
   count        = var.domain_name != "" ? 1 : 0
@@ -10,6 +8,7 @@ data "aws_route53_zone" "main" {
 }
 
 resource "aws_acm_certificate" "main" {
+  provider          = aws.us_east_1
   count             = var.domain_name != "" ? 1 : 0
   domain_name       = var.domain_name
   validation_method = "DNS"
@@ -37,6 +36,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "main" {
+  provider                = aws.us_east_1
   count                   = var.domain_name != "" ? 1 : 0
   certificate_arn         = aws_acm_certificate.main[0].arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]

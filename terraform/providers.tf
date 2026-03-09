@@ -14,7 +14,7 @@ terraform {
   # backend "s3" {
   #   bucket         = "instaclone-terraform-state"
   #   key            = "terraform.tfstate"
-  #   region         = "us-east-1"
+  #   region         = "ap-southeast-1"
   #   dynamodb_table = "instaclone-terraform-locks"
   #   encrypt        = true
   # }
@@ -22,6 +22,20 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
+
+  default_tags {
+    tags = {
+      Project     = var.project_name
+      Environment = var.environment
+      ManagedBy   = "terraform"
+    }
+  }
+}
+
+# CloudFront requires ACM certificates in us-east-1
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
 
   default_tags {
     tags = {
