@@ -64,6 +64,32 @@ components:
           items:
             type: string
 
+    ProfileResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        postCount:
+          type: integer
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          maxLength: 100
+        bio:
+          type: string
+          maxLength: 500
+        avatarUrl:
+          type: string
+
 paths:
   /api/auth/register:
     post:
@@ -110,6 +136,58 @@ paths:
                 $ref: '#/components/schemas/TokenResponse'
         '401':
           description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/profiles/{username}:
+    get:
+      tags:
+        - Profiles
+      summary: Get a user profile
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Profile found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/profiles:
+    put:
+      tags:
+        - Profiles
+      summary: Update own profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
