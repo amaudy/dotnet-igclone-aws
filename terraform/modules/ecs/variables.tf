@@ -83,10 +83,10 @@ variable "ecs_security_group_id" {
 
 variable "cpu" {
   type    = number
-  default = 256
+  default = 512
 }
 
 variable "memory" {
   type    = number
-  default = 512
+  default = 1024
 }

@@ -50,11 +50,7 @@ public class PostsController : ControllerBase
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 50);
 
-        var baseQuery = _db.Posts
-            .Include(p => p.User)
-            .Include(p => p.Likes)
-            .Include(p => p.Comments)
-            .AsQueryable();
+        var baseQuery = _db.Posts.AsQueryable();
 
         if (!string.IsNullOrEmpty(username))
             baseQuery = baseQuery.Where(p => p.User.UserName == username);
@@ -65,11 +61,21 @@ public class PostsController : ControllerBase
         var posts = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(p => new PostResponse
+            {
+                Id = p.Id,
+                ImageUrl = p.ImageUrl,
+                Caption = p.Caption,
+                CreatedAt = p.CreatedAt,
+                Username = p.User.UserName!,
+                LikeCount = p.Likes.Count,
+                CommentCount = p.Comments.Count
+            })
             .ToListAsync();
 
         return Ok(new PaginatedResponse<PostResponse>
         {
-            Items = posts.Select(ToResponse).ToList(),
+            Items = posts,
             Page = page,
             PageSize = pageSize,
             TotalCount = totalCount,
@@ -81,15 +87,23 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var post = await _db.Posts
-            .Include(p => p.User)
-            .Include(p => p.Likes)
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .Where(p => p.Id == id)
+            .Select(p => new PostResponse
+            {
+                Id = p.Id,
+                ImageUrl = p.ImageUrl,
+                Caption = p.Caption,
+                CreatedAt = p.CreatedAt,
+                Username = p.User.UserName!,
+                LikeCount = p.Likes.Count,
+                CommentCount = p.Comments.Count
+            })
+            .FirstOrDefaultAsync();
 
         if (post == null)
             return NotFound(new ErrorResponse { Message = "Post not found" });
 
-        return Ok(ToResponse(post));
+        return Ok(post);
     }
 
     [Authorize]

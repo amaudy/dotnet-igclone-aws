@@ -124,6 +124,7 @@ resource "aws_ecs_task_definition" "api" {
 
     environment = [
       { name = "ASPNETCORE_ENVIRONMENT", value = "Production" },
+      { name = "AWS_DEFAULT_REGION", value = var.aws_region },
       { name = "Database__Host", value = var.db_host },
       { name = "Database__Name", value = var.db_name },
       { name = "Database__User", value = "sa" },
