@@ -21,12 +21,10 @@ function timeAgo(dateStr: string): string {
 </script>
 
 <template>
-  <div class="card bg-base-200 shadow-md">
+  <div class="rounded-xl bg-gray-900 shadow-md overflow-hidden">
     <div class="flex items-center gap-3 px-4 py-3">
-      <div class="avatar placeholder">
-        <div class="bg-neutral text-neutral-content w-8 h-8 rounded-full flex items-center justify-center">
-          <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
-        </div>
+      <div class="w-8 h-8 rounded-full bg-gray-700 text-gray-200 flex items-center justify-center text-sm font-medium">
+        {{ post.username.charAt(0).toUpperCase() }}
       </div>
       <RouterLink :to="`/profile/${post.username}`" class="font-semibold text-sm hover:underline">
         {{ post.username }}
@@ -34,12 +32,10 @@ function timeAgo(dateStr: string): string {
     </div>
 
     <RouterLink :to="`/posts/${post.id}`">
-      <figure>
-        <img :src="post.imageUrl" :alt="post.caption ?? 'Post image'" class="w-full object-cover" @error="onImgError" />
-      </figure>
+      <img :src="post.imageUrl" :alt="post.caption ?? 'Post image'" class="w-full object-cover" @error="onImgError" />
     </RouterLink>
 
-    <div class="card-body px-4 py-3 gap-1">
+    <div class="px-4 py-3 space-y-1">
       <div class="flex items-center gap-4 text-sm">
         <span>{{ post.likeCount }} {{ post.likeCount === 1 ? 'like' : 'likes' }}</span>
         <RouterLink :to="`/posts/${post.id}`" class="hover:underline">
@@ -50,7 +46,7 @@ function timeAgo(dateStr: string): string {
         <span class="font-semibold">{{ post.username }}</span>
         {{ post.caption }}
       </p>
-      <p class="text-xs opacity-50">{{ timeAgo(post.createdAt) }}</p>
+      <p class="text-xs text-gray-500">{{ timeAgo(post.createdAt) }}</p>
     </div>
   </div>
 </template>

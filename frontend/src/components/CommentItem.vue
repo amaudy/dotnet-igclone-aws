@@ -28,11 +28,11 @@ function timeAgo(dateStr: string): string {
         {{ comment.username }}
       </RouterLink>
       {{ comment.text }}
-      <span class="opacity-50 text-xs ml-1">{{ timeAgo(comment.createdAt) }}</span>
+      <span class="text-gray-500 text-xs ml-1">{{ timeAgo(comment.createdAt) }}</span>
     </div>
     <button
       v-if="comment.username === currentUser"
-      class="btn btn-ghost btn-xs text-error"
+      class="p-1 text-red-500 hover:text-red-400"
       @click="$emit('delete', comment.id)"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

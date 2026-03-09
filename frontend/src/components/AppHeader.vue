@@ -12,12 +12,8 @@ function logout() {
 </script>
 
 <template>
-  <div class="navbar bg-base-200 sticky top-0 z-50">
-    <div class="flex-1">
-      <RouterLink to="/" class="btn btn-ghost text-xl">InstaClone</RouterLink>
-    </div>
-    <div class="flex-none">
-      <button class="btn btn-ghost btn-sm" @click="logout">Logout</button>
-    </div>
+  <div class="flex items-center justify-between px-4 py-3 bg-gray-900 sticky top-0 z-50">
+    <RouterLink to="/" class="text-xl font-bold hover:opacity-80">InstaClone</RouterLink>
+    <button class="text-sm text-gray-400 hover:text-white" @click="logout">Logout</button>
   </div>
 </template>

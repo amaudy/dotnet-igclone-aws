@@ -8,10 +8,10 @@ const auth = useAuthStore()
 </script>
 
 <template>
-  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-base-200 z-50 flex">
+  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-gray-900 z-50 flex border-t border-gray-800">
     <button
       class="flex-1 flex justify-center items-center py-3 transition-colors"
-      :class="route.path === '/' ? 'text-primary' : 'text-base-content/60 hover:text-base-content'"
+      :class="route.path === '/' ? 'text-blue-500' : 'text-gray-500 hover:text-gray-300'"
       @click="router.push('/')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -22,7 +22,7 @@ const auth = useAuthStore()
 
     <button
       class="flex-1 flex justify-center items-center py-3 transition-colors"
-      :class="route.path === '/create' ? 'text-primary' : 'text-base-content/60 hover:text-base-content'"
+      :class="route.path === '/create' ? 'text-blue-500' : 'text-gray-500 hover:text-gray-300'"
       @click="router.push('/create')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -34,7 +34,7 @@ const auth = useAuthStore()
 
     <button
       class="flex-1 flex justify-center items-center py-3 transition-colors"
-      :class="route.path.startsWith('/profile') ? 'text-primary' : 'text-base-content/60 hover:text-base-content'"
+      :class="route.path.startsWith('/profile') ? 'text-blue-500' : 'text-gray-500 hover:text-gray-300'"
       @click="router.push(`/profile/${auth.username}`)"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

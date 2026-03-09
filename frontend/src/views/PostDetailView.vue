@@ -91,16 +91,14 @@ function timeAgo(dateStr: string): string {
   <main class="pb-20 px-4">
     <LoadingSpinner v-if="loading" />
 
-    <div v-else-if="!post" class="text-center py-16 opacity-50">
+    <div v-else-if="!post" class="text-center py-16 text-gray-500">
       Post not found
     </div>
 
     <div v-else>
       <div class="flex items-center gap-3 py-3">
-        <div class="avatar placeholder">
-          <div class="bg-neutral text-neutral-content w-8 h-8 rounded-full flex items-center justify-center">
-            <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
-          </div>
+        <div class="w-8 h-8 rounded-full bg-gray-700 text-gray-200 flex items-center justify-center text-sm font-medium">
+          {{ post.username.charAt(0).toUpperCase() }}
         </div>
         <RouterLink :to="`/profile/${post.username}`" class="font-semibold text-sm hover:underline">
           {{ post.username }}
@@ -110,8 +108,8 @@ function timeAgo(dateStr: string): string {
       <img :src="post.imageUrl" :alt="post.caption ?? 'Post'" class="w-full rounded-lg" />
 
       <div class="flex items-center gap-3 py-3">
-        <button class="btn btn-ghost btn-sm btn-circle" @click="toggleLike">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" :class="liked ? 'fill-error text-error' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button class="p-1 rounded-full hover:bg-gray-800" @click="toggleLike">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" :class="liked ? 'fill-red-500 text-red-500' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
           </svg>
         </button>
@@ -122,11 +120,11 @@ function timeAgo(dateStr: string): string {
         <span class="font-semibold">{{ post.username }}</span>
         {{ post.caption }}
       </p>
-      <p class="text-xs opacity-50 mb-4">{{ timeAgo(post.createdAt) }}</p>
+      <p class="text-xs text-gray-500 mb-4">{{ timeAgo(post.createdAt) }}</p>
 
-      <div class="divider my-2"></div>
+      <div class="border-t border-gray-800 my-2"></div>
 
-      <div v-if="comments.length === 0" class="text-center py-4 opacity-50 text-sm">
+      <div v-if="comments.length === 0" class="text-center py-4 text-gray-500 text-sm">
         No comments yet
       </div>
       <div v-else>
@@ -144,15 +142,15 @@ function timeAgo(dateStr: string): string {
           v-model="commentText"
           type="text"
           placeholder="Add a comment..."
-          class="input input-bordered input-sm flex-1"
+          class="flex-1 px-3 py-1.5 text-sm bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
           maxlength="500"
         />
         <button
           type="submit"
-          class="btn btn-primary btn-sm"
+          class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           :disabled="!commentText.trim() || submitting"
         >
-          <span v-if="submitting" class="loading loading-spinner loading-xs"></span>
+          <span v-if="submitting" class="spinner h-3 w-3"></span>
           <span v-else>Post</span>
         </button>
       </form>

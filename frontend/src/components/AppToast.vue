@@ -5,9 +5,9 @@ const toast = useToastStore()
 </script>
 
 <template>
-  <div v-if="toast.visible" class="toast toast-top toast-center z-[100]">
-    <div class="alert alert-error">
-      <span>{{ toast.message }}</span>
+  <div v-if="toast.visible" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]">
+    <div class="px-4 py-3 rounded-lg bg-red-900/80 text-red-200 shadow-lg">
+      {{ toast.message }}
     </div>
   </div>
 </template>

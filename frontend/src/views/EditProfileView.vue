@@ -59,37 +59,37 @@ async function submit() {
     <LoadingSpinner v-if="loading" />
 
     <div v-else>
-      <div v-if="error" role="alert" class="alert alert-error mb-4">
-        <span>{{ error }}</span>
+      <div v-if="error" class="p-3 rounded-lg bg-red-900/50 text-red-300 text-sm mb-4">
+        {{ error }}
       </div>
 
       <form @submit.prevent="submit" class="space-y-4">
-        <label class="form-control w-full">
-          <div class="label"><span class="label-text">Display Name</span></div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Display Name</label>
           <input
             v-model="displayName"
             type="text"
-            class="input input-bordered w-full"
+            class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
             maxlength="100"
           />
-        </label>
+        </div>
 
-        <label class="form-control w-full">
-          <div class="label"><span class="label-text">Bio</span></div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Bio</label>
           <textarea
             v-model="bio"
-            class="textarea textarea-bordered w-full"
+            class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
             maxlength="500"
             rows="3"
           ></textarea>
-        </label>
+        </div>
 
         <button
           type="submit"
-          class="btn btn-primary w-full"
+          class="w-full py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
           :disabled="saving"
         >
-          <span v-if="saving" class="loading loading-spinner loading-sm"></span>
+          <span v-if="saving" class="spinner h-4 w-4"></span>
           <span v-else>Save</span>
         </button>
       </form>

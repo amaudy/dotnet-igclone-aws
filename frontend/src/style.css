@@ -1,4 +1,13 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: dark;
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-gray-950 text-gray-100 antialiased;
+}
+
+@utility spinner {
+  @apply inline-block border-2 border-current border-t-transparent rounded-full animate-spin;
 }

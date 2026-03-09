@@ -50,15 +50,15 @@ async function submit() {
   <main class="pb-20 px-4">
     <h2 class="text-xl font-bold my-4">New Post</h2>
 
-    <div v-if="error" role="alert" class="alert alert-error mb-4">
-      <span>{{ error }}</span>
+    <div v-if="error" class="p-3 rounded-lg bg-red-900/50 text-red-300 text-sm mb-4">
+      {{ error }}
     </div>
 
     <form @submit.prevent="submit" class="space-y-4">
       <input
         type="file"
         accept="image/*"
-        class="file-input file-input-bordered w-full"
+        class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-800 file:text-gray-300 hover:file:bg-gray-700"
         @change="onFileChange"
         required
       />
@@ -72,7 +72,7 @@ async function submit() {
 
       <textarea
         v-model="caption"
-        class="textarea textarea-bordered w-full"
+        class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 resize-none"
         placeholder="Write a caption..."
         maxlength="2200"
         rows="3"
@@ -80,10 +80,10 @@ async function submit() {
 
       <button
         type="submit"
-        class="btn btn-primary w-full"
+        class="w-full py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
         :disabled="loading || !file"
       >
-        <span v-if="loading" class="loading loading-spinner loading-sm"></span>
+        <span v-if="loading" class="spinner h-4 w-4"></span>
         <span v-else>Share</span>
       </button>
     </form>
