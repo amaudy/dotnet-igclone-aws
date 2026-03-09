@@ -26,6 +26,14 @@ variable "alb_dns_name" {
   type = string
 }
 
+variable "frontend_bucket_arn" {
+  type = string
+}
+
+variable "uploads_bucket_arn" {
+  type = string
+}
+
 variable "certificate_arn" {
   description = "ACM certificate ARN (optional, for custom domain)"
   type        = string

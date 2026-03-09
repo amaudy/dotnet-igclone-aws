@@ -29,6 +29,20 @@ module "storage" {
   environment  = var.environment
 }
 
+module "cdn" {
+  source = "./modules/cdn"
+
+  project_name                         = var.project_name
+  environment                          = var.environment
+  frontend_bucket_regional_domain_name = module.storage.frontend_bucket_regional_domain_name
+  frontend_bucket_id                   = module.storage.frontend_bucket_id
+  frontend_bucket_arn                  = module.storage.frontend_bucket_arn
+  uploads_bucket_regional_domain_name  = module.storage.uploads_bucket_regional_domain_name
+  uploads_bucket_id                    = module.storage.uploads_bucket_id
+  uploads_bucket_arn                   = module.storage.uploads_bucket_arn
+  alb_dns_name                         = module.alb.alb_dns_name
+}
+
 module "alb" {
   source = "./modules/alb"
 
@@ -91,8 +105,8 @@ module "ecs" {
   jwt_key_arn           = module.secrets.jwt_key_arn
   uploads_bucket_name   = module.storage.uploads_bucket_name
   uploads_bucket_arn    = module.storage.uploads_bucket_arn
-  cdn_base_url          = ""
-  cors_origin           = ""
+  cdn_base_url          = "https://${module.cdn.distribution_domain_name}"
+  cors_origin           = "https://${module.cdn.distribution_domain_name}"
   alb_security_group_id = module.alb.security_group_id
   ecs_security_group_id = aws_security_group.ecs.id
 }
