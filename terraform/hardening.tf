@@ -1,27 +1,26 @@
-# --- ALB restriction: only allow traffic from CloudFront ---
+# --- ALB ingress: allow HTTP/HTTPS from anywhere ---
+# The CloudFront managed prefix list exceeds the 60-rule SG limit.
+# For Phase 1, allow public access. Phase 2 will add WAF on CloudFront
+# for proper traffic filtering (rate limiting, bot protection, etc).
 
-data "aws_ec2_managed_prefix_list" "cloudfront" {
-  name = "com.amazonaws.global.cloudfront.origin-facing"
-}
-
-resource "aws_security_group_rule" "alb_cloudfront_http" {
+resource "aws_security_group_rule" "alb_http" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = module.alb.security_group_id
-  description       = "HTTP from CloudFront only"
+  description       = "HTTP from anywhere"
 }
 
-resource "aws_security_group_rule" "alb_cloudfront_https" {
+resource "aws_security_group_rule" "alb_https" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = module.alb.security_group_id
-  description       = "HTTPS from CloudFront only"
+  description       = "HTTPS from anywhere"
 }
 
 # --- CloudWatch Alarm: unhealthy target count ---
