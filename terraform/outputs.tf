@@ -1,1 +1,4 @@
-# Outputs will be added as modules are wired in
+output "ecr_repository_url" {
+  description = "ECR repository URL for the API image"
+  value       = module.ecr.repository_url
+}
