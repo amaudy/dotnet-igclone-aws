@@ -41,6 +41,17 @@ module "cdn" {
   uploads_bucket_id                    = module.storage.uploads_bucket_id
   uploads_bucket_arn                   = module.storage.uploads_bucket_arn
   alb_dns_name                         = module.alb.alb_dns_name
+  domain_name                          = var.domain_name
+  certificate_arn                      = var.domain_name != "" ? aws_acm_certificate_validation.main[0].certificate_arn : ""
+}
+
+module "dns" {
+  count  = var.domain_name != "" ? 1 : 0
+  source = "./modules/dns"
+
+  domain_name               = var.domain_name
+  cloudfront_domain_name    = module.cdn.distribution_domain_name
+  cloudfront_hosted_zone_id = module.cdn.distribution_hosted_zone_id
 }
 
 module "alb" {
