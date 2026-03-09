@@ -85,6 +85,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IImageService, LocalImageService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -97,6 +107,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseCors();
 app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI();
