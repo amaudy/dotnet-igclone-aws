@@ -30,13 +30,21 @@ const router = createRouter({
       meta: { auth: true },
     },
     {
+      path: '/profile/edit',
+      component: () => import('../views/EditProfileView.vue'),
+      meta: { auth: true },
+    },
+    {
       path: '/profile/:username',
       component: () => import('../views/ProfileView.vue'),
       meta: { auth: true },
     },
     {
-      path: '/profile/edit',
-      component: () => import('../views/EditProfileView.vue'),
+      path: '/profile',
+      redirect: () => {
+        const auth = useAuthStore()
+        return `/profile/${auth.username}`
+      },
       meta: { auth: true },
     },
   ],
@@ -46,6 +54,7 @@ router.beforeEach((to) => {
   const auth = useAuthStore()
   if (to.meta.auth && !auth.isAuthenticated) return '/login'
   if (to.meta.guest && auth.isAuthenticated) return '/'
+  if (to.path === '/profile' && auth.isAuthenticated) return `/profile/${auth.username}`
 })
 
 export default router
