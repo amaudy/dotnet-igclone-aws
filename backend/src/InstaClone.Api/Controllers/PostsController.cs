@@ -45,16 +45,21 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? username = null)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 50);
 
-        var query = _db.Posts
+        var baseQuery = _db.Posts
             .Include(p => p.User)
             .Include(p => p.Likes)
             .Include(p => p.Comments)
-            .OrderByDescending(p => p.CreatedAt);
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(username))
+            baseQuery = baseQuery.Where(p => p.User.UserName == username);
+
+        var query = baseQuery.OrderByDescending(p => p.CreatedAt);
 
         var totalCount = await query.CountAsync();
         var posts = await query
