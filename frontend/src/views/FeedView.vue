@@ -38,7 +38,7 @@ onMounted(async () => {
 
 <template>
   <AppHeader />
-  <main class="max-w-lg mx-auto pt-16 pb-20 px-4">
+  <main class="pb-20 px-4">
     <div v-if="loading" class="space-y-4 mt-4">
       <div v-for="i in 3" :key="i" class="card bg-base-200">
         <div class="flex items-center gap-3 px-4 py-3">

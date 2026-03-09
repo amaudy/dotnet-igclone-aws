@@ -53,7 +53,7 @@ async function submit() {
 
 <template>
   <AppHeader />
-  <main class="max-w-lg mx-auto pt-16 pb-20 px-4">
+  <main class="pb-20 px-4">
     <h2 class="text-xl font-bold my-4">Edit Profile</h2>
 
     <LoadingSpinner v-if="loading" />

@@ -88,7 +88,7 @@ function timeAgo(dateStr: string): string {
 
 <template>
   <AppHeader />
-  <main class="max-w-lg mx-auto pt-16 pb-20 px-4">
+  <main class="pb-20 px-4">
     <LoadingSpinner v-if="loading" />
 
     <div v-else-if="!post" class="text-center py-16 opacity-50">
@@ -98,7 +98,7 @@ function timeAgo(dateStr: string): string {
     <div v-else>
       <div class="flex items-center gap-3 py-3">
         <div class="avatar placeholder">
-          <div class="bg-neutral text-neutral-content w-8 rounded-full">
+          <div class="bg-neutral text-neutral-content w-8 h-8 rounded-full flex items-center justify-center">
             <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
           </div>
         </div>

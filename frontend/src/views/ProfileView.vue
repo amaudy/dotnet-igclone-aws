@@ -39,7 +39,7 @@ watch(() => route.params.username, (u) => { if (u) load(u as string) })
 
 <template>
   <AppHeader />
-  <main class="max-w-lg mx-auto pt-16 pb-20 px-4">
+  <main class="pb-20 px-4">
     <LoadingSpinner v-if="loading" />
 
     <div v-else-if="error" class="alert alert-error mt-4">
@@ -49,7 +49,7 @@ watch(() => route.params.username, (u) => { if (u) load(u as string) })
     <div v-else-if="profile">
       <div class="flex items-center gap-4 py-6">
         <div class="avatar placeholder">
-          <div class="bg-neutral text-neutral-content w-16 rounded-full">
+          <div class="bg-neutral text-neutral-content w-16 h-16 rounded-full flex items-center justify-center">
             <span class="text-2xl">{{ profile.username.charAt(0).toUpperCase() }}</span>
           </div>
         </div>

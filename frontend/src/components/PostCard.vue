@@ -24,7 +24,7 @@ function timeAgo(dateStr: string): string {
   <div class="card bg-base-200 shadow-md">
     <div class="flex items-center gap-3 px-4 py-3">
       <div class="avatar placeholder">
-        <div class="bg-neutral text-neutral-content w-8 rounded-full">
+        <div class="bg-neutral text-neutral-content w-8 h-8 rounded-full flex items-center justify-center">
           <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
         </div>
       </div>
