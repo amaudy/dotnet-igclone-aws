@@ -12,3 +12,6 @@ Thumbs.db
 # Environment
 .env
 .env.*
+
+# Local config overrides
+**/appsettings.*.local.json
