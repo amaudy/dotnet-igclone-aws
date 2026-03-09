@@ -1,3 +1,4 @@
+aws_profile  = "your-aws-profile"
 project_name = "instaclone"
 aws_region   = "ap-southeast-1"
 environment  = "prod"

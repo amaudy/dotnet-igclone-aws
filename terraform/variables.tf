@@ -4,6 +4,11 @@ variable "project_name" {
   default     = "instaclone"
 }
 
+variable "aws_profile" {
+  description = "AWS CLI profile to use"
+  type        = string
+}
+
 variable "aws_region" {
   description = "AWS region for all resources"
   type        = string
