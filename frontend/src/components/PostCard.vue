@@ -3,6 +3,11 @@ import type { PostResponse } from '../types'
 
 defineProps<{ post: PostResponse }>()
 
+function onImgError(e: Event) {
+  const img = e.target as HTMLImageElement
+  img.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" fill="%23333"><rect width="400" height="400"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23666" font-size="16">Image unavailable</text></svg>'
+}
+
 function timeAgo(dateStr: string): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000)
   if (seconds < 60) return 'just now'
@@ -20,7 +25,7 @@ function timeAgo(dateStr: string): string {
     <div class="flex items-center gap-3 px-4 py-3">
       <div class="avatar placeholder">
         <div class="bg-neutral text-neutral-content w-8 rounded-full">
-          <span class="text-sm">{{ post.username[0].toUpperCase() }}</span>
+          <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
         </div>
       </div>
       <RouterLink :to="`/profile/${post.username}`" class="font-semibold text-sm hover:underline">
@@ -30,7 +35,7 @@ function timeAgo(dateStr: string): string {
 
     <RouterLink :to="`/posts/${post.id}`">
       <figure>
-        <img :src="post.imageUrl" :alt="post.caption ?? 'Post image'" class="w-full object-cover" />
+        <img :src="post.imageUrl" :alt="post.caption ?? 'Post image'" class="w-full object-cover" @error="onImgError" />
       </figure>
     </RouterLink>
 

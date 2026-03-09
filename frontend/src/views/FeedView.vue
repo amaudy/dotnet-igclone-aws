@@ -4,7 +4,7 @@ import { getPosts } from '../api/posts'
 import type { PostResponse } from '../types'
 import AppHeader from '../components/AppHeader.vue'
 import PostCard from '../components/PostCard.vue'
-import LoadingSpinner from '../components/LoadingSpinner.vue'
+
 
 const posts = ref<PostResponse[]>([])
 const loading = ref(true)
@@ -39,7 +39,19 @@ onMounted(async () => {
 <template>
   <AppHeader />
   <main class="max-w-lg mx-auto pt-16 pb-20 px-4">
-    <LoadingSpinner v-if="loading" />
+    <div v-if="loading" class="space-y-4 mt-4">
+      <div v-for="i in 3" :key="i" class="card bg-base-200">
+        <div class="flex items-center gap-3 px-4 py-3">
+          <div class="skeleton h-8 w-8 rounded-full"></div>
+          <div class="skeleton h-4 w-24"></div>
+        </div>
+        <div class="skeleton h-64 w-full"></div>
+        <div class="px-4 py-3 space-y-2">
+          <div class="skeleton h-3 w-20"></div>
+          <div class="skeleton h-3 w-48"></div>
+        </div>
+      </div>
+    </div>
 
     <div v-else-if="error" class="alert alert-error mt-4">
       <span>{{ error }}</span>

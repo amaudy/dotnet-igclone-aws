@@ -99,7 +99,7 @@ function timeAgo(dateStr: string): string {
       <div class="flex items-center gap-3 py-3">
         <div class="avatar placeholder">
           <div class="bg-neutral text-neutral-content w-8 rounded-full">
-            <span class="text-sm">{{ post.username[0].toUpperCase() }}</span>
+            <span class="text-sm">{{ post.username.charAt(0).toUpperCase() }}</span>
           </div>
         </div>
         <RouterLink :to="`/profile/${post.username}`" class="font-semibold text-sm hover:underline">

@@ -50,7 +50,7 @@ watch(() => route.params.username, (u) => { if (u) load(u as string) })
       <div class="flex items-center gap-4 py-6">
         <div class="avatar placeholder">
           <div class="bg-neutral text-neutral-content w-16 rounded-full">
-            <span class="text-2xl">{{ profile.username[0].toUpperCase() }}</span>
+            <span class="text-2xl">{{ profile.username.charAt(0).toUpperCase() }}</span>
           </div>
         </div>
         <div class="flex-1">

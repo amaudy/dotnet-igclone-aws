@@ -4,7 +4,7 @@ import * as authApi from '../api/auth'
 import type { LoginRequest, RegisterRequest } from '../types'
 
 function decodePayload(token: string): { unique_name: string; [key: string]: string } {
-  const payload = token.split('.')[1]
+  const payload = token.split('.')[1]!
   return JSON.parse(atob(payload))
 }
 

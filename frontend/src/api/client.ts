@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useToastStore } from '../stores/toast'
 
 const client = axios.create({
   baseURL: '/api',
@@ -18,6 +19,13 @@ client.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       window.location.href = '/login'
+    } else if (!error.response) {
+      try {
+        const toast = useToastStore()
+        toast.show('Network error. Please check your connection.')
+      } catch {
+        // store not yet initialized
+      }
     }
     return Promise.reject(error)
   },
