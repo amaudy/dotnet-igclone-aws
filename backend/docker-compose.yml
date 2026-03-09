@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: ./src/InstaClone.Api
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=InstaClone;User Id=sa;Password=YourStr0ng!Pass;TrustServerCertificate=True
+      - Jwt__Key=super-secret-dev-key-that-is-at-least-32-chars!!
+      - Jwt__Issuer=InstaClone
+      - Jwt__Audience=InstaClone
+
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStr0ng!Pass
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStr0ng!Pass" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  sqldata:
