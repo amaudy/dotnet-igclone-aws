@@ -54,7 +54,6 @@ router.beforeEach((to) => {
   const auth = useAuthStore()
   if (to.meta.auth && !auth.isAuthenticated) return '/login'
   if (to.meta.guest && auth.isAuthenticated) return '/'
-  if (to.path === '/profile' && auth.isAuthenticated) return `/profile/${auth.username}`
 })
 
 export default router
